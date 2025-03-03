@@ -2,6 +2,7 @@
 
 /*
 Plugin Name: Mail to Ntfy
+Plugin URI: https://github.com/xplora1a/mail-to-ntfy
 Description: Will replace the default wp_mail function with a custom function that sends the email via ntfy.sh
 Version: 1.0
 Author: Stuart Ward
