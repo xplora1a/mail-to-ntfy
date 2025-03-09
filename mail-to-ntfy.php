@@ -22,14 +22,14 @@ function ntfy_mails($args){
     $subject = $args['subject'];
     $message = $args['message'];
 
-    // send a notification via ntfy using curl
-    $ch = curl_init();
-    curl_setopt($ch,CURLOPT_URL,'https://ntfy.sh/readingcyclecampaigne');
-    curl_setopt($ch,CURLOPT_POST,1);
-    curl_setopt($ch,CURLOPT_POSTFIELDS,http_build_query('to:'+$to+' subject:'+$subject+' message:'+$message));
-    curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
-    $result = curl_exec($ch);
-    curl_close($ch);     
-
+    // send notification with WP_http.post
+    $response = WP_http.post('https://ntfy.sh/readingcyclecampaigne', array(
+        'headers' => array('Content-Type' => 'text/plain;'),
+        'body' => array(
+            'email' => $to,
+            'subject' => $subject,
+            'message' => $message
+        )
+    ));
     return $args;
 }
