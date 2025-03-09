@@ -15,8 +15,6 @@ if ( ! defined( 'WPINC' ) ) {
 
 define( 'MAIL_TO_NTFY_VERSION', '1.0.0' );
 
-
-
 function wp_mail( $to, $subject, $message, $headers = '', $attachments = array() ) {
     $atts = apply_filters( 'wp_mail', compact( 'to', 'subject', 'message', 'headers', 'attachments' ) );
 
