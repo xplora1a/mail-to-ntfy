@@ -20,15 +20,15 @@ add_filter('wp_mail','ntfy_mails', 10,1);
 function ntfy_mails($args){
     $to = $args['to'];
     $subject = $args['subject'];
-    $message = $args['message'];
+    $message = preg_split("/<!--[ a-z]+-->/",$args['message'])[2];
+    $message = preg_replace("#</*strong>#", "*", $message);
+    $message = strip_tags($message);
 
-    // send notification with WP_http.post
+    // send notification with wp_remote_post
     $response = wp_remote_post('https://ntfy.sh/readingcyclecampaign', array(
-        'headers' => array('Content-Type' => 'text/plain;'),
-        'body' =>
-            'email:' . $to . '\n' .
-            'subject:' . $subject . '\n' .   
-            'message:' . $message
+        'headers' => array('Content-Type' => 'text/markdown;',
+            'Title' => $subject),
+        'body' => $message
         )
     );
     return $args;
