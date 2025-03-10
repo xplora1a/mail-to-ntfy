@@ -21,12 +21,12 @@ function ntfy_mails($args){
     $to = $args['to'];
     $subject = $args['subject'];
     $message = preg_split("/<!--[ a-z]+-->/",$args['message'])[2];
-    $message = preg_replace("#</*strong>#", "*", $message);
+    $message = preg_replace("#</*strong>#", " ", $message);
     $message = strip_tags($message);
 
     // send notification with wp_remote_post
     $response = wp_remote_post('https://ntfy.sh/readingcyclecampaign', array(
-        'headers' => array('Content-Type' => 'text/markdown;',
+        'headers' => array('Content-Type' => 'text/plain;',
             'Title' => $subject),
         'body' => $message
         )
