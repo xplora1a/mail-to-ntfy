@@ -30,6 +30,6 @@ function ntfy_mails($args){
             'subject:' . $subject . '\n' .   
             'message:' . $message
         )
-    ));
+    );
     return $args;
 }
