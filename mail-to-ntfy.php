@@ -23,12 +23,12 @@ function ntfy_mails($args){
     $message = $args['message'];
 
     // send notification with WP_http.post
-    $response = WP_http.post('https://ntfy.sh/readingcyclecampaigne', array(
+    $response = WP_http.post('https://ntfy.sh/readingcyclecampaign', array(
         'headers' => array('Content-Type' => 'text/plain;'),
-        'body' => array(
-            'email' => $to,
-            'subject' => $subject,
-            'message' => $message
+        'body' =>
+            'email:' . $to . '\n' .
+            'subject:' . $subject . '\n' .   
+            'message:' . $message
         )
     ));
     return $args;
