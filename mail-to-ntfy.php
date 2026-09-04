@@ -15,7 +15,77 @@ if ( ! defined( 'WPINC' ) ) {
 
 define( 'MAIL_TO_NTFY_VERSION', '1.0.0' );
 
+define( 'MAIL_TO_NTFY_CHANNEL_OPTION', 'mail_to_ntfy_channel' );
+
 add_filter('wp_mail','ntfy_mails', 10,1);
+add_action( 'admin_init', 'mail_to_ntfy_register_settings' );
+add_action( 'admin_menu', 'mail_to_ntfy_add_settings_page' );
+
+function mail_to_ntfy_register_settings() {
+    register_setting(
+        'mail_to_ntfy_settings',
+        MAIL_TO_NTFY_CHANNEL_OPTION,
+        array(
+            'type' => 'string',
+            'sanitize_callback' => 'mail_to_ntfy_sanitize_channel',
+            'default' => 'readingcyclecampaign',
+        )
+    );
+
+    add_settings_section(
+        'mail_to_ntfy_settings_section',
+        'ntfy settings',
+        '__return_false',
+        'mail_to_ntfy'
+    );
+
+    add_settings_field(
+        MAIL_TO_NTFY_CHANNEL_OPTION,
+        'Channel',
+        'mail_to_ntfy_channel_field',
+        'mail_to_ntfy',
+        'mail_to_ntfy_settings_section'
+    );
+}
+
+function mail_to_ntfy_add_settings_page() {
+    add_options_page(
+        'Mail to Ntfy',
+        'Mail to Ntfy',
+        'manage_options',
+        'mail_to_ntfy',
+        'mail_to_ntfy_settings_page'
+    );
+}
+
+function mail_to_ntfy_sanitize_channel( $channel ) {
+    return sanitize_text_field( trim( $channel ) );
+}
+
+function mail_to_ntfy_channel_field() {
+    $channel = get_option( MAIL_TO_NTFY_CHANNEL_OPTION, '' );
+    ?>
+    <input type="text" name="<?php echo esc_attr( MAIL_TO_NTFY_CHANNEL_OPTION ); ?>" value="<?php echo esc_attr( $channel ); ?>" class="regular-text" required />
+    <?php
+}
+
+function mail_to_ntfy_settings_page() {
+    if ( ! current_user_can( 'manage_options' ) ) {
+        return;
+    }
+    ?>
+    <div class="wrap">
+        <h1>Mail to Ntfy</h1>
+        <form method="post" action="options.php">
+            <?php
+            settings_fields( 'mail_to_ntfy_settings' );
+            do_settings_sections( 'mail_to_ntfy' );
+            submit_button();
+            ?>
+        </form>
+    </div>
+    <?php
+}
 
 function ntfy_mails($args){
     $to = $args['to'];
@@ -25,7 +95,8 @@ function ntfy_mails($args){
     $message = strip_tags($message);
 
     // send notification with wp_remote_post
-    $response = wp_remote_post('https://ntfy.sh/readingcyclecampaign', array(
+    $channel = get_option( MAIL_TO_NTFY_CHANNEL_OPTION, '' );
+    $response = wp_remote_post('https://ntfy.sh/' . rawurlencode( $channel ), array(
         'headers' => array('Content-Type' => 'text/plain;',
             'Title' => $subject),
         'body' => $message
