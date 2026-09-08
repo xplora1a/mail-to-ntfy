@@ -4,7 +4,7 @@
 Plugin Name: Mail to Ntfy
 Plugin URI: https://github.com/xplora1a/mail-to-ntfy
 Description: Will send a ntfy message as well as sending the email;
-Version: 1.0
+Version: 1.1.0
 Author: Stuart Ward
 */
 
@@ -13,7 +13,7 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-define( 'MAIL_TO_NTFY_VERSION', '1.0.0' );
+define( 'MAIL_TO_NTFY_VERSION', '1.1.0' );
 
 define( 'MAIL_TO_NTFY_CHANNEL_OPTION', 'mail_to_ntfy_channel' );
 
