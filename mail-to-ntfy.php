@@ -66,6 +66,7 @@ function mail_to_ntfy_channel_field() {
     $channel = get_option( MAIL_TO_NTFY_CHANNEL_OPTION, '' );
     ?>
     <input type="text" name="<?php echo esc_attr( MAIL_TO_NTFY_CHANNEL_OPTION ); ?>" value="<?php echo esc_attr( $channel ); ?>" class="regular-text" required />
+    <p class="description">The ntfy channel is the topic where notifications will be published. Subscribe to the same channel in the ntfy app or at ntfy.sh to receive these email notifications.</p>
     <?php
 }
 
@@ -96,6 +97,9 @@ function ntfy_mails($args){
 
     // send notification with wp_remote_post
     $channel = get_option( MAIL_TO_NTFY_CHANNEL_OPTION, '' );
+    if (empty($channel)) {
+        return $args; // If no channel is set, do not send notification
+    }
     $response = wp_remote_post('https://ntfy.sh/' . rawurlencode( $channel ), array(
         'headers' => array('Content-Type' => 'text/plain;',
             'Title' => $subject),
