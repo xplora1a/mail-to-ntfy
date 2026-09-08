@@ -59,7 +59,9 @@ function mail_to_ntfy_add_settings_page() {
 }
 
 function mail_to_ntfy_sanitize_channel( $channel ) {
-    return sanitize_text_field( trim( $channel ) );
+    $channel = sanitize_text_field( trim( $channel ) );
+    $channel = preg_replace( '/\s+/', '_', $channel ); // Remove whitespace
+    return preg_replace( '/[^A-Za-z0-9_-]/', '', $channel );
 }
 
 function mail_to_ntfy_channel_field() {
