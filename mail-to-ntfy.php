@@ -28,7 +28,7 @@ function mail_to_ntfy_register_settings() {
         array(
             'type' => 'string',
             'sanitize_callback' => 'mail_to_ntfy_sanitize_channel',
-            'default' => 'readingcyclecampaign',
+            'default' => '',
         )
     );
 
@@ -94,7 +94,6 @@ function ntfy_mails($args){
     $to = $args['to'];
     $subject = $args['subject'];
     $message = preg_split("/<!--[ a-z]+-->/",$args['message'])[2];
-    $message = preg_replace("#</*strong>#", " ", $message);
     $message = strip_tags($message);
 
     // send notification with wp_remote_post
