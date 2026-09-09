@@ -17,9 +17,19 @@ define( 'MAIL_TO_NTFY_VERSION', '1.1.0' );
 
 define( 'MAIL_TO_NTFY_CHANNEL_OPTION', 'mail_to_ntfy_channel' );
 
-add_filter('wp_mail','ntfy_mails', 10,1);
-add_action( 'admin_init', 'mail_to_ntfy_register_settings' );
+add_filter( 'wp_mail', 'ntfy_mails', 10, 1 );
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'mail_to_ntfy_plugin_action_links' );
 add_action( 'admin_menu', 'mail_to_ntfy_add_settings_page' );
+add_action( 'admin_init', 'mail_to_ntfy_register_settings' );
+
+function mail_to_ntfy_plugin_action_links( $links ) {
+    if ( current_user_can( 'manage_options' ) ) {
+        $settings_url = admin_url( 'admin.php?page=mail_to_ntfy' );
+        $links[] = '<a href="' . esc_url( $settings_url ) . '">Settings</a>';
+    }
+
+    return $links;
+}
 
 function mail_to_ntfy_register_settings() {
     register_setting(
@@ -49,12 +59,13 @@ function mail_to_ntfy_register_settings() {
 }
 
 function mail_to_ntfy_add_settings_page() {
-    add_options_page(
+    add_menu_page(
         'Mail to Ntfy',
         'Mail to Ntfy',
         'manage_options',
         'mail_to_ntfy',
-        'mail_to_ntfy_settings_page'
+        'mail_to_ntfy_settings_page',
+        'dashicons-email-alt'
     );
 }
 
