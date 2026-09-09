@@ -104,8 +104,7 @@ function mail_to_ntfy_settings_page() {
 function ntfy_mails($args){
     $to = $args['to'];
     $subject = $args['subject'];
-    $message = preg_split("/<!--[ a-z]+-->/",$args['message'])[2];
-    $message = strip_tags($message);
+    $message = strip_tags($args['message']);
 
     // send notification with wp_remote_post
     $channel = get_option( MAIL_TO_NTFY_CHANNEL_OPTION, '' );
