@@ -14,6 +14,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 define( 'MAIL_TO_NTFY_VERSION', '1.1.0' );
+define( 'MAIL_TO_NTFY_MAX_MESSAGE_LENGTH', 4000 );
 
 define( 'MAIL_TO_NTFY_CHANNEL_OPTION', 'mail_to_ntfy_channel' );
 
@@ -107,6 +108,11 @@ function ntfy_mails($args){
     $message = strip_tags($args['message']);
     $message_parts = preg_split( '/\R[ \t]*\R/', $message, 2 );
     $message = $message_parts[0];
+    if ( function_exists( 'mb_substr' ) ) {
+        $message = mb_substr( $message, 0, MAIL_TO_NTFY_MAX_MESSAGE_LENGTH );
+    } else {
+        $message = substr( $message, 0, MAIL_TO_NTFY_MAX_MESSAGE_LENGTH );
+    }
 
     // send notification with wp_remote_post
     $channel = get_option( MAIL_TO_NTFY_CHANNEL_OPTION, '' );
