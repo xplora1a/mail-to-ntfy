@@ -5,7 +5,7 @@ when an email is triggered on the system.
 
 ## Installation
 
-Create a directory in your wordpress:
+Create a directory in your wordpressif :
 
 `mkdir wordpress/wp-content/plugins/mail-to-ntfy`
 
@@ -21,5 +21,5 @@ Restart webserver:
 
 Configuration:
 
-Useing an Adminisrator account set the ntfy.sh channel where you want the notifications to go to.
+Using an Adminisrator account set the ntfy.sh channel where you want the notifications to go to.
 
