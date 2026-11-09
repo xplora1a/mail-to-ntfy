@@ -5,15 +5,17 @@ when an email is triggered on the system.
 
 ## Installation
 
-Create a directory in your wordpressif :
+Create a directory in your wordpress directory:
 
-`mkdir wordpress/wp-content/plugins/mail-to-ntfy`
+`mkdir /var/www/wordpress/wp-content/plugins/mail-to-ntfy`
 
 Copy the files:
 
 `cp index.php /var/www/wordpress/wp-content/plugins/mail-to-ntfy/`
 
 `cp mail-to-ntfy.php  /var/www/wordpress/wp-content/plugins/mail-to-ntfy/`
+
+`sudo chown -R www-data:www-data /var/www/wordpress/wp-content/plugins/mail-to-ntfy`
 
 Restart webserver:
 
